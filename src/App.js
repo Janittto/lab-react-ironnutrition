@@ -5,7 +5,7 @@ import FoodBox from './Components/Foodbox';
 import AddFoodForm from './Components/AddFoodForm';
 import Search from './Components/Search';
 
-//import { Row, Divider, Button } from 'antd';
+import { Row, Divider, Button } from 'antd';
 
 function App() {
   const [food, setFood] = useState(foods);
@@ -28,15 +28,16 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={() => setButton(button ? false : true)}>
+      <Button onClick={() => setButton(button ? false : true)}>
         {button ? 'Hide Form' : 'Form'}
-      </button>
+      </Button>
       {/* <AddFoodForm setFood={setFood} /> */}
       {button ? '' : <AddFoodForm />}
       <Search searchString={searchString} handleSearch={handleSearch} />
-      <div>
+      <Divider>Food List</Divider>
+      <Row style={{ width: '100%', justifyContent: 'center' }}>
         {!allFood.length ? (
-          <p>Empty</p>
+          <Divider>Empty list</Divider>
         ) : (
           allFood.map((food) => {
             return (
@@ -44,8 +45,7 @@ function App() {
             );
           })
         )}
-      </div>
-      <div></div>
+      </Row>
     </div>
   );
 }
