@@ -1,23 +1,51 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import foods from './foods.json';
+import FoodBox from './Components/Foodbox';
+import AddFoodForm from './Components/AddFoodForm';
+import Search from './Components/Search';
+
+//import { Row, Divider, Button } from 'antd';
 
 function App() {
+  const [food, setFood] = useState(foods);
+  const [searchString, setSearchString] = useState('');
+  const [button, setButton] = useState(false);
+
+  const handleSearch = (event) => {
+    //console.log(event.target.value);
+    setSearchString(event.target.value);
+  };
+
+  const allFood = food.filter((food) => {
+    return food.name.toLowerCase().includes(searchString.toLowerCase());
+  });
+
+  const removeFood = (name) => {
+    const updatedFoodList = food.filter((food) => food.name !== name);
+    return setFood(updatedFoodList);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => setButton(button ? false : true)}>
+        {button ? 'Hide Form' : 'Form'}
+      </button>
+      {/* <AddFoodForm setFood={setFood} /> */}
+      {button ? '' : <AddFoodForm />}
+      <Search searchString={searchString} handleSearch={handleSearch} />
+      <div>
+        {!allFood.length ? (
+          <p>Empty</p>
+        ) : (
+          allFood.map((food) => {
+            return (
+              <FoodBox key={food.name} food={food} removeFood={removeFood} />
+            );
+          })
+        )}
+      </div>
+      <div></div>
     </div>
   );
 }
